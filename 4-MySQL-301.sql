@@ -44,7 +44,7 @@ CALL GetEmployeesByDept(1);
 -- 4. Triggers and Events
 
 -- Trigger Example
--- Creating a trigger to automatically update the last modified date when an employee's salary is updated.
+-- Creating a trigger to automatically update the employee salary table when employee table is updated.
 DELIMITER $$
 DROP TRIGGER IF EXISTS `UpdateNames`; 
 CREATE TRIGGER UpdateNames
@@ -55,10 +55,10 @@ BEGIN
     SET first_name = NEW.first_name,
 		last_name = NEW.last_name
     WHERE employee_id = NEW.employee_id;
-END$$employee_idemployee_salary
+END$$
 DELIMITER ;
 -- Event Example
--- Creating an event to archive old employee salary records every year.
+-- Creating an event to add employees aging 60 or more t .
 
 DELIMITER $$
 DROP EVENT IF EXISTS `AddToExitList`;
@@ -69,7 +69,7 @@ BEGIN
     INSERT INTO exit_list (employee_id, first_name, last_name, last_day)
     SELECT employee_id, first_name, last_name, Date_ADD(CURDATE(), INTERVAL 7 DAY)
     FROM employee
-    WHERE employee.age > 60;
+    WHERE employee.age >= 60;
 END$$
 DELIMITER ;
 -- Check Employee is added to exit list
